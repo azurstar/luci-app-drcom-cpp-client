@@ -115,7 +115,7 @@ function config_save()
         nic_name            = luci_http.formvalue("nic_name") or "",
         IS_TEST             = luci_http.formvalue("IS_TEST") or "true",
         DEBUG               = luci_http.formvalue("DEBUG") or "true",
-        LOG_PATH            = luci_http.formvalue("LOG_PATH") or "drcom_client.log",
+        LOG_PATH            = luci_http.formvalue("LOG_PATH") or "/tmp/drcom_client.log",
     }
 
     -- 生成新的 YAML 文件内容
