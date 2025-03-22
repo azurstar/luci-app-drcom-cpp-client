@@ -1,3 +1,4 @@
 # OpenWRT Drcom客户端
 ## 效果图
-![e0a0a4f6d1f61cbb0345d35160d5d4a9](https://github.com/user-attachments/assets/c46cd97b-5e67-4450-8b86-4590c48e4e21)
+![d5be8eda-dfc3-4591-9004-b4a8374cad39](https://github.com/user-attachments/assets/56fbd6e7-b94b-4099-9136-a7efb7fa1360)
+
