@@ -7,10 +7,6 @@
     <form method="post" action="<%=url("admin", "services", "drcom", "save") %>">
         <table class="table">
           <tr>
-            <th>字段</th>
-            <th>值</th>
-          </tr>
-          <tr>
             <td>服务器 (server)</td>
             <td><input type="text" name="server" value="<%=data.server or ""%>" /></td>
           </tr>
@@ -47,59 +43,8 @@
             <td><input type="text" name="mac" value="<%=data.mac or ""%>" /></td>
           </tr>
           <tr>
-            <td>CONTROLCHECKSTATUS</td>
-            <td><input type="text" name="CONTROLCHECKSTATUS" value="<%=data.CONTROLCHECKSTATUS or ""%>" /></td>
-          </tr>
-          <tr>
-            <td>ADAPTERNUM</td>
-            <td><input type="text" name="ADAPTERNUM" value="<%=data.ADAPTERNUM or ""%>" /></td>
-          </tr>
-          <tr>
-            <td>KEEP_ALIVE_VERSION</td>
-            <td><input type="text" name="KEEP_ALIVE_VERSION" value="<%=data.KEEP_ALIVE_VERSION or ""%>" /></td>
-          </tr>
-          <tr>
-            <td>AUTH_VERSION</td>
-            <td><input type="text" name="AUTH_VERSION" value="<%=data.AUTH_VERSION or ""%>" /></td>
-          </tr>
-          <tr>
-            <td>IPDOG</td>
-            <td><input type="text" name="IPDOG" value="<%=data.IPDOG or ""%>" /></td>
-          </tr>
-          <tr>
-            <td>ror_version</td>
-            <td>
-              <select name="ror_version">
-                <option value="false" <%= (data.ror_version == "false") and "selected" or "" %>>false</option>
-                <option value="true" <%= (data.ror_version == "true") and "selected" or "" %>>true</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
             <td>网卡名称 (nic_name)</td>
             <td><input type="text" name="nic_name" value="<%=data.nic_name or ""%>" /></td>
-          </tr>
-          <tr>
-            <td>IS_TEST</td>
-            <td>
-              <select name="IS_TEST">
-                <option value="false" <%= (data.IS_TEST == "false") and "selected" or "" %>>false</option>
-                <option value="true" <%= (data.IS_TEST == "true") and "selected" or "" %>>true</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td>DEBUG</td>
-            <td>
-              <select name="DEBUG">
-                <option value="false" <%= (data.DEBUG == "false") and "selected" or "" %>>false</option>
-                <option value="true" <%= (data.DEBUG == "true") and "selected" or "" %>>true</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td>日志路径 (LOG_PATH)</td>
-            <td><input type="text" name="LOG_PATH" value="<%=data.LOG_PATH or ""%>" /></td>
           </tr>
         </table>
       
