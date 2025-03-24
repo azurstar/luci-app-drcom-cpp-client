@@ -79,6 +79,22 @@ function config_page()
     luci_http.write(luci.template.render("drcom/config", { data = data }))
 end
 
+-- 高级页面
+function advance_page()
+    local luci_http = require "luci.http"
+    local fs = require "nixio.fs"
+    
+    -- 读取配置文件
+    local config_file = "/etc/drcom/config.yaml"
+    local content = fs.readfile(config_file) or ""
+    local data = parse_simple_yaml(content)
+    data.__status = check_drcom_status()
+
+    -- 渲染配置页面
+    luci_http.prepare_content("text/html")
+    luci_http.write(luci.template.render("drcom/advance", { data = data }))
+end
+
 -- 日志页面
 function log_page()
     local luci_http = require "luci.http"
@@ -97,20 +113,20 @@ function config_save()
 
     -- 从表单获取字段值
     local formData = {
-        server              = luci_http.formvalue("server") or "",
+        server              = luci_http.formvalue("server") or "192.168.100.150",
         username            = luci_http.formvalue("username") or "",
         password            = luci_http.formvalue("password") or "",
-        host_name           = luci_http.formvalue("host_name") or "",
-        host_os             = luci_http.formvalue("host_os") or "",
-        host_ip             = luci_http.formvalue("host_ip") or "",
-        PRIMARY_DNS         = luci_http.formvalue("PRIMARY_DNS") or "",
-        dhcp_server         = luci_http.formvalue("dhcp_server") or "",
-        mac                 = luci_http.formvalue("mac") or "",
-        CONTROLCHECKSTATUS  = luci_http.formvalue("CONTROLCHECKSTATUS") or "",
-        ADAPTERNUM          = luci_http.formvalue("ADAPTERNUM") or "",
-        KEEP_ALIVE_VERSION  = luci_http.formvalue("KEEP_ALIVE_VERSION") or "",
-        AUTH_VERSION        = luci_http.formvalue("AUTH_VERSION") or "",
-        IPDOG               = luci_http.formvalue("IPDOG") or "",
+        host_name           = luci_http.formvalue("host_name") or "Linux",
+        host_os             = luci_http.formvalue("host_os") or "Linux",
+        host_ip             = luci_http.formvalue("host_ip") or "0.0.0.0",
+        PRIMARY_DNS         = luci_http.formvalue("PRIMARY_DNS") or "114.114.114.114",
+        dhcp_server         = luci_http.formvalue("dhcp_server") or "0.0.0.0",
+        mac                 = luci_http.formvalue("mac") or "b888e3051680",
+        CONTROLCHECKSTATUS  = luci_http.formvalue("CONTROLCHECKSTATUS") or "20",
+        ADAPTERNUM          = luci_http.formvalue("ADAPTERNUM") or "01",
+        KEEP_ALIVE_VERSION  = luci_http.formvalue("KEEP_ALIVE_VERSION") or "dc02",
+        AUTH_VERSION        = luci_http.formvalue("AUTH_VERSION") or "0a00",
+        IPDOG               = luci_http.formvalue("IPDOG") or "01",
         ror_version         = luci_http.formvalue("ror_version") or "false",
         nic_name            = luci_http.formvalue("nic_name") or "",
         IS_TEST             = luci_http.formvalue("IS_TEST") or "true",
@@ -125,3 +141,4 @@ function config_save()
     -- 保存后重定向回“配置”页面
     luci_http.redirect(luci.dispatcher.build_url("admin", "services", "drcom", "config"))
 end
+
