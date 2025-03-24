@@ -57,7 +57,10 @@ function index()
     entry({"admin", "services", "drcom", "config"}, call("config_page"), _("配置"), 1)
     
     -- 注册“日志”页面
-    entry({"admin", "services", "drcom", "log"}, call("log_page"), _("日志"), 2)
+    entry({"admin", "services", "drcom", "log"}, call("advance_page"), _("高级"), 2)
+    
+    -- 注册“高级”页面
+    entry({"admin", "services", "drcom", "advance"}, call("log_page"), _("日志"), 3)
 
     -- 保存表单的处理函数
     entry({"admin", "services", "drcom", "save"}, call("config_save"), nil)
