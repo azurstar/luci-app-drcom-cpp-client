@@ -1,0 +1,40 @@
+<%+header%>
+<h2>高级</h2>
+
+<div class="cbi-map">
+  <div class="cbi-section">
+    <h3>运行状态: <%= data.__status %></h3>
+    <form method="post" action="<%=url("admin", "services", "drcom", "save") %>">
+        <table class="table">
+          <tr>
+            <td>CONTROLCHECKSTATUS</td>
+            <td><input type="text" name="CONTROLCHECKSTATUS" value="<%=data.CONTROLCHECKSTATUS or ""%>" /></td>
+          </tr>
+          <tr>
+            <td>ADAPTERNUM</td>
+            <td><input type="text" name="ADAPTERNUM" value="<%=data.ADAPTERNUM or ""%>" /></td>
+          </tr>
+          <tr>
+            <td>KEEP_ALIVE_VERSION</td>
+            <td><input type="text" name="KEEP_ALIVE_VERSION" value="<%=data.KEEP_ALIVE_VERSION or ""%>" /></td>
+          </tr>
+          <tr>
+            <td>AUTH_VERSION</td>
+            <td><input type="text" name="AUTH_VERSION" value="<%=data.AUTH_VERSION or ""%>" /></td>
+          </tr>
+          <tr>
+            <td>IPDOG</td>
+            <td><input type="text" name="IPDOG" value="<%=data.IPDOG or ""%>" /></td>
+          </tr>
+          <tr>
+            <td>网卡名称 (nic_name)</td>
+            <td><input type="text" name="nic_name" value="<%=data.nic_name or ""%>" /></td>
+          </tr>
+        </table>
+      
+        <br />
+        <input class="cbi-button cbi-button-apply" type="submit" value="保存" />
+      </form>
+  </div>
+</div>
+<%+footer%>
