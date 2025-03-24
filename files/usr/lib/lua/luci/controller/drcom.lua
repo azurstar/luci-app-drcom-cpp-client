@@ -4,14 +4,14 @@ module("luci.controller.drcom", package.seeall)
 local function parse_simple_yaml(content)
     local data = {}
     for line in content:gmatch("[^\r\n]+") do
-        line = line:match("^%s*(.-)%s*$")       -- 去除首尾空白
-        if line ~= "" and not line:match("^#") then  -- 跳过空行和注释
-            local key, val = line:match('^(%S+):%s*"(.*)"%s*$')  -- 匹配带引号的值
+        line = line:match("^%s*(.-)%s*$")
+        if line ~= "" and not line:match("^#") then
+            local key, val = line:match('^(%S+):%s*"(.*)"%s*$')
             if not key then
-                key, val = line:match('^(%S+):%s*(.*)%s*$')      -- 匹配不带引号的值
+                key, val = line:match('^(%S+):%s*(.*)%s*$')
             end
             if key and val then
-                val = val:gsub('^"(.*)"$', "%1")  -- 去掉值的引号
+                val = val:gsub('^"(.*)"$', "%1")
                 data[key] = val
             end
         end
@@ -57,10 +57,10 @@ function index()
     entry({"admin", "services", "drcom", "config"}, call("config_page"), _("配置"), 1)
     
     -- 注册“日志”页面
-    entry({"admin", "services", "drcom", "log"}, call("advance_page"), _("高级"), 2)
+    entry({"admin", "services", "drcom", "advance"}, call("advance_page"), _("高级"), 2)
     
     -- 注册“高级”页面
-    entry({"admin", "services", "drcom", "advance"}, call("log_page"), _("日志"), 3)
+    entry({"admin", "services", "drcom", "log"}, call("log_page"), _("日志"), 3)
 
     -- 保存表单的处理函数
     entry({"admin", "services", "drcom", "save"}, call("config_save"), nil)
