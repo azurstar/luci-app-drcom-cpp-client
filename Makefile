@@ -46,6 +46,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/view/drcom
 	$(CP) ./files/usr/lib/lua/luci/controller/drcom.lua $(1)/usr/lib/lua/luci/controller/
 	$(CP) ./files/usr/lib/lua/luci/view/drcom/config.htm $(1)/usr/lib/lua/luci/view/drcom/
+	$(CP) ./files/usr/lib/lua/luci/view/drcom/advance.htm $(1)/usr/lib/lua/luci/view/drcom/
 	$(CP) ./files/usr/lib/lua/luci/view/drcom/log.htm $(1)/usr/lib/lua/luci/view/drcom/
 
 	# drcom_client 可执行文件
