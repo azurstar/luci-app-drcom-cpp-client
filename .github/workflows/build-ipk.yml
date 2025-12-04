@@ -10,6 +10,9 @@ jobs:
   build_packages:
     name: Build ${{ matrix.name }}
     runs-on: ubuntu-22.04
+    
+    timeout-minutes: 120
+    
     strategy:
       fail-fast: false
       matrix:
@@ -20,11 +23,13 @@ jobs:
               CONFIG_TARGET_x86=y
               CONFIG_TARGET_x86_64=y
               CONFIG_TARGET_x86_64_DEVICE_generic=y
+
           - target: rockchip
             name: rockchip_armv8
             config_text: |
               CONFIG_TARGET_rockchip=y
               CONFIG_TARGET_rockchip_armv8=y
+
           - target: ramips
             name: ramips_mt7621
             config_text: |
@@ -58,14 +63,12 @@ jobs:
       - name: Create build configuration
         run: |
           cd ../openwrt
-          # 写入基础配置
           cat > .config <<EOF
           ${{ matrix.config_text }}
           CONFIG_PACKAGE_luci=y
           CONFIG_PACKAGE_luci-app-drcom-cpp-client=y
           CONFIG_PACKAGE_libopenssl=y
           EOF
-          # 生成完整配置
           make defconfig
 
       - name: Download package sources
@@ -112,6 +115,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
+            artifacts/ipk-x86_64/*.ipk
             artifacts/ipk-rockchip_armv8/*.ipk
             artifacts/ipk-ramips_mt7621/*.ipk
-            artifacts/ipk-x86_64/*.ipk
