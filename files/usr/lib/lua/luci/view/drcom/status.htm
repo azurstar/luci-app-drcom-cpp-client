@@ -1,0 +1,39 @@
+<%+header%>
+<div class="cbi-map">
+    <h2 name="content">服务状态</h2>
+    <div class="cbi-section">
+        <div class="cbi-value">
+            <label class="cbi-value-title">运行状态</label>
+            <div class="cbi-value-field">
+                <span style="font-weight: bold; color: <%=data.running and '#28a745' or '#dc3545'%>;">
+                    <%=data.running_str%>
+                </span>
+            </div>
+        </div>
+        <div class="cbi-value">
+            <label class="cbi-value-title">开机自启</label>
+            <div class="cbi-value-field">
+                <span style="font-weight: bold; color: <%=data.enabled and '#28a745' or '#dc3545'%>;">
+                    <%=data.enabled_str%>
+                </span>
+            </div>
+        </div>
+        <div class="cbi-value">
+            <label class="cbi-value-title">服务操作</label>
+            <div class="cbi-value-field">
+                <% if data.running then %>
+                    <a class="cbi-button cbi-button-apply" href="<%=url('admin/services/drcom/restart')%>">重启</a>
+                    <a class="cbi-button" style="background-color: #dc3545; color: white;" href="<%=url('admin/services/drcom/stop')%>">停止</a>
+                <% else %>
+                    <a class="cbi-button cbi-button-apply" href="<%=url('admin/services/drcom/start')%>">启动</a>
+                <% end %>
+                <% if data.enabled then %>
+                    <a class="cbi-button cbi-button-remove" href="<%=url('admin/services/drcom/toggle_boot')%>">禁用自启</a>
+                <% else %>
+                    <a class="cbi-button cbi-button-apply" href="<%=url('admin/services/drcom/toggle_boot')%>">启用自启</a>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
+<%+footer%>
