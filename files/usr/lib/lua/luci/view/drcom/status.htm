@@ -23,12 +23,12 @@
             <div class="cbi-value-field">
                 <% if data.running then %>
                     <a class="cbi-button cbi-button-apply" href="<%=url('admin/services/drcom/restart')%>">重启</a>
-                    <a class="cbi-button" style="background-color: #dc3545; color: white;" href="<%=url('admin/services/drcom/stop')%>">停止</a>
+                    <a class="cbi-button" style="background-color: #f5365c; color: white;" href="<%=url('admin/services/drcom/stop')%>">停止</a>
                 <% else %>
                     <a class="cbi-button cbi-button-apply" href="<%=url('admin/services/drcom/start')%>">启动</a>
                 <% end %>
                 <% if data.enabled then %>
-                    <a class="cbi-button cbi-button-remove" href="<%=url('admin/services/drcom/toggle_boot')%>">禁用自启</a>
+                    <a class="cbi-button cbi-button-remove" style="color: white;" href="<%=url('admin/services/drcom/toggle_boot')%>">禁用自启</a>
                 <% else %>
                     <a class="cbi-button cbi-button-apply" href="<%=url('admin/services/drcom/toggle_boot')%>">启用自启</a>
                 <% end %>
