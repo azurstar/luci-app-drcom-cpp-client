@@ -1,46 +1,66 @@
 #!/bin/sh /etc/rc.common
+
 START=99
 STOP=10
 USE_PROCD=1
 
+CONFIG_FILE="/etc/drcom/config.yaml"
+PROG="/usr/bin/drcom_client"
+
+# 简单的辅助函数，用于从 YAML 读取配置
+# 用法: read_yaml_key "key_name"
+read_yaml_key() {
+    local key="$1"
+    local value=""
+    if [ -f "$CONFIG_FILE" ]; then
+        # 匹配 key: value，去除空格、双引号、单引号
+        value=$(grep "^[[:space:]]*${key}:" "$CONFIG_FILE" | sed -e "s/^.*${key}:[[:space:]]*//" -e 's/["\r'\'']//g')
+    fi
+    echo "$value"
+}
 
 start_service() {
-    # 使用 procd 管理主程序
-    procd_open_instance "drcom_client"
-    procd_set_param service "drcom_client"
-    procd_set_param command sh -c "cd /etc/drcom && exec /usr/bin/drcom_client"
-    procd_set_param respawn
+    # ----------------------------------------
+    # 实例 1: drcom_client 主程序
+    # ----------------------------------------
+    procd_open_instance "main"
+    
+    # 必须切换到 /etc/drcom 目录执行，否则可能读不到配置
+    procd_set_param command /bin/sh -c "cd /etc/drcom && exec $PROG"
+    
+    # 自动重生：如果挂了，5秒后重启，无限次重试
+    procd_set_param respawn ${respawn_threshold:-3600} ${respawn_timeout:-5} ${respawn_retry:-0}
+    
+    # 环境变量
     procd_set_param env PATH="/usr/sbin:/usr/bin:/sbin:/bin"
     procd_set_param env LD_LIBRARY_PATH="/usr/lib:/lib"
+    
+    # 将标准输出重定向到系统日志
     procd_set_param stdout 1
     procd_set_param stderr 1
+    
     procd_close_instance
 
-    # 使用 procd 管理网络保持活跃脚本
-    procd_open_instance "drcom_keep_alive"
-    procd_set_param service "drcom_client"
-    procd_set_param command sh "/etc/drcom/keep_alive.sh"
-    procd_set_param env PATH="/usr/sbin:/usr/bin:/sbin:/bin"
-    procd_set_param respawn
-    procd_set_param stdout 1
-    procd_set_param stderr 1
-    procd_close_instance
+    # ----------------------------------------
+    # 实例 2: 网络保活脚本 (按需启动)
+    # ----------------------------------------
+    local keep_alive_enabled
+    keep_alive_enabled=$(read_yaml_key "keep_alive_enabled")
+
+    if [ "$keep_alive_enabled" = "true" ]; then
+        procd_open_instance "monitor"
+        
+        procd_set_param command /bin/sh "/etc/drcom/keep_alive.sh"
+        
+        # 保活脚本也设置重生，万一脚本自己崩溃了也能拉起来
+        procd_set_param respawn
+        
+        procd_set_param stdout 1
+        procd_set_param stderr 1
+        
+        procd_close_instance
+    fi
 }
 
-stop_service() {
-    # 明确调用procd的kill函数来停止服务
-    # 这会停止所有注册到 'drcom_client' 服务下的实例
-    procd_kill "drcom_client"
-}
-
-restart() {
-    stop_service
-    sleep 1
-    start_service
-}
-
-reload_service() {
-    stop_service
-    sleep 1
-    start_service
-}
+# 注意：不要手动定义 stop(), restart(), reload()
+# 让 rc.common 自动处理，这样最稳健。
