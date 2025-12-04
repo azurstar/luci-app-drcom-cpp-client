@@ -17,3 +17,6 @@ ADAPTERNUM: "01"
 KEEP_ALIVE_VERSION: "dc02"
 AUTH_VERSION: "0a00"
 IPDOG: "01"
+keep_alive_enabled: false
+keep_alive_interval: 300 # seconds
+keep_alive_url: "http://www.baidu.com"
