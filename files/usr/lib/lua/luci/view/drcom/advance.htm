@@ -1,40 +1,129 @@
 <%+header%>
-<h2>高级</h2>
+<form method="post" action="<%=url("admin", "services", "drcom", "save") %>">
+    <input type="hidden" name="origin" value="advance" />
+    <div class="cbi-map">
+        <h2 name="content">高级配置</h2>
 
-<div class="cbi-map">
-  <div class="cbi-section">
-    <h3>运行状态: <%= data.__status %></h3>
-    <form method="post" action="<%=url("admin", "services", "drcom", "save") %>">
-        <table class="table">
-          <tr>
-            <td>CONTROLCHECKSTATUS</td>
-            <td><input type="text" name="CONTROLCHECKSTATUS" value="<%=data.CONTROLCHECKSTATUS or ""%>" /></td>
-          </tr>
-          <tr>
-            <td>ADAPTERNUM</td>
-            <td><input type="text" name="ADAPTERNUM" value="<%=data.ADAPTERNUM or ""%>" /></td>
-          </tr>
-          <tr>
-            <td>KEEP_ALIVE_VERSION</td>
-            <td><input type="text" name="KEEP_ALIVE_VERSION" value="<%=data.KEEP_ALIVE_VERSION or ""%>" /></td>
-          </tr>
-          <tr>
-            <td>AUTH_VERSION</td>
-            <td><input type="text" name="AUTH_VERSION" value="<%=data.AUTH_VERSION or ""%>" /></td>
-          </tr>
-          <tr>
-            <td>IPDOG</td>
-            <td><input type="text" name="IPDOG" value="<%=data.IPDOG or ""%>" /></td>
-          </tr>
-          <tr>
-            <td>网卡名称 (nic_name)</td>
-            <td><input type="text" name="nic_name" value="<%=data.nic_name or ""%>" /></td>
-          </tr>
-        </table>
-      
-        <br />
-        <input class="cbi-button cbi-button-apply" type="submit" value="保存" />
-      </form>
-  </div>
-</div>
+        <!-- Protocol Parameters -->
+        <fieldset class="cbi-section">
+            <legend>协议参数</legend>
+            <div class="cbi-section-node">
+                <div class="cbi-value">
+                    <label class="cbi-value-title" for="host_name">主机名 (host_name)</label>
+                    <div class="cbi-value-field">
+                        <input class="cbi-input-text" type="text" id="host_name" name="host_name" value="<%=data.host_name or 'Linux'%>" />
+                        <div class="cbi-value-description">客户端报告给服务器的主机名。</div>
+                    </div>
+                </div>
+                <div class="cbi-value">
+                    <label class="cbi-value-title" for="host_os">操作系统 (host_os)</label>
+                    <div class="cbi-value-field">
+                        <input class="cbi-input-text" type="text" id="host_os" name="host_os" value="<%=data.host_os or 'Linux'%>" />
+                        <div class="cbi-value-description">客户端报告给服务器的操作系统类型。</div>
+                    </div>
+                </div>
+                <div class="cbi-value">
+                    <label class="cbi-value-title" for="CONTROLCHECKSTATUS">CONTROLCHECKSTATUS</label>
+                    <div class="cbi-value-field">
+                        <input class="cbi-input-text" type="text" id="CONTROLCHECKSTATUS" name="CONTROLCHECKSTATUS" value="<%=data.CONTROLCHECKSTATUS or '20'%>" />
+                        <div class="cbi-value-description">控制检查状态。</div>
+                    </div>
+                </div>
+                <div class="cbi-value">
+                    <label class="cbi-value-title" for="ADAPTERNUM">ADAPTERNUM</label>
+                    <div class="cbi-value-field">
+                        <input class="cbi-input-text" type="text" id="ADAPTERNUM" name="ADAPTERNUM" value="<%=data.ADAPTERNUM or '01'%>" />
+                        <div class="cbi-value-description">适配器号。</div>
+                    </div>
+                </div>
+                <div class="cbi-value">
+                    <label class="cbi-value-title" for="KEEP_ALIVE_VERSION">KEEP_ALIVE_VERSION</label>
+                    <div class="cbi-value-field">
+                        <input class="cbi-input-text" type="text" id="KEEP_ALIVE_VERSION" name="KEEP_ALIVE_VERSION" value="<%=data.KEEP_ALIVE_VERSION or 'dc02'%>" />
+                        <div class="cbi-value-description">心跳包版本号。</div>
+                    </div>
+                </div>
+                <div class="cbi-value">
+                    <label class="cbi-value-title" for="AUTH_VERSION">AUTH_VERSION</label>
+                    <div class="cbi-value-field">
+                        <input class="cbi-input-text" type="text" id="AUTH_VERSION" name="AUTH_VERSION" value="<%=data.AUTH_VERSION or '0a00'%>" />
+                        <div class="cbi-value-description">认证版本号。</div>
+                    </div>
+                </div>
+                <div class="cbi-value">
+                    <label class="cbi-value-title" for="IPDOG">IPDOG</label>
+                    <div class="cbi-value-field">
+                        <input class="cbi-input-text" type="text" id="IPDOG" name="IPDOG" value="<%=data.IPDOG or '01'%>" />
+                        <div class="cbi-value-description">IPDOG参数。</div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Keep Alive -->
+        <fieldset class="cbi-section">
+            <legend>网络守护 (Keep Alive)</legend>
+            <div class="cbi-section-node">
+                <div class="cbi-value">
+                    <label class="cbi-value-title" for="keep_alive_enabled">启用守护</label>
+                    <div class="cbi-value-field">
+                        <input type="checkbox" id="keep_alive_enabled" name="keep_alive_enabled" value="1" <%=data.keep_alive_enabled == "true" and "checked" or ""%> />
+                        <label for="keep_alive_enabled">启用后，将定期检查网络连通性，如果断开则自动重连。</label>
+                    </div>
+                </div>
+                <div class="cbi-value">
+                    <label class="cbi-value-title" for="keep_alive_interval">检查间隔 (秒)</label>
+                    <div class="cbi-value-field">
+                        <input class="cbi-input-text" type="text" id="keep_alive_interval" name="keep_alive_interval" value="<%=data.keep_alive_interval or '300'%>" />
+                    </div>
+                </div>
+                <div class="cbi-value">
+                    <label class="cbi-value-title" for="keep_alive_url">检查地址 (URL)</label>
+                    <div class="cbi-value-field">
+                        <input class="cbi-input-text" type="text" id="keep_alive_url" name="keep_alive_url" value="<%=data.keep_alive_url or 'http://www.baidu.com'%>" />
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Debugging -->
+        <fieldset class="cbi-section">
+            <legend>调试选项</legend>
+            <div class="cbi-section-node">
+                <div class="cbi-value">
+                    <label class="cbi-value-title" for="DEBUG">启用调试日志 (DEBUG)</label>
+                    <div class="cbi-value-field">
+                        <input type="checkbox" id="DEBUG" name="DEBUG" value="1" <%=data.DEBUG == "true" and "checked" or ""%> />
+                        <label for="DEBUG">启用后，会记录详细的调试日志。</label>
+                    </div>
+                </div>
+                <div class="cbi-value">
+                    <label class="cbi-value-title" for="IS_TEST">测试模式 (IS_TEST)</label>
+                    <div class="cbi-value-field">
+                        <input type="checkbox" id="IS_TEST" name="IS_TEST" value="1" <%=data.IS_TEST == "true" and "checked" or ""%> />
+                        <label for="IS_TEST">启用客户端的测试模式。</label>
+                    </div>
+                </div>
+                <div class="cbi-value">
+                    <label class="cbi-value-title" for="ror_version">ROR 版本 (ror_version)</label>
+                    <div class="cbi-value-field">
+                        <input type="checkbox" id="ror_version" name="ror_version" value="1" <%=data.ror_version == "true" and "checked" or ""%> />
+                        <label for="ror_version">启用 ROR 版本协议。</label>
+                    </div>
+                </div>
+                <div class="cbi-value">
+                    <label class="cbi-value-title" for="LOG_PATH">日志路径 (LOG_PATH)</label>
+                    <div class="cbi-value-field">
+                        <input class="cbi-input-text" type="text" id="LOG_PATH" name="LOG_PATH" value="<%=data.LOG_PATH or '/tmp/drcom_client.log'%>" />
+                        <div class="cbi-value-description">指定日志文件的存放路径。</div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        
+        <div class="cbi-page-actions">
+            <input class="cbi-button cbi-button-apply" type="submit" value="保存" />
+        </div>
+    </div>
+</form>
 <%+footer%>

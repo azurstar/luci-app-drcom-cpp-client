@@ -1,11 +1,14 @@
 <%+header%>
-<h2>日志</h2>
-
 <div class="cbi-map">
-  <div class="cbi-section">
-    <div style="height: 400px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px;">
-      <pre><%= log_content %></pre>
+    <h2 name="content">运行日志</h2>
+    <div class="cbi-section">
+        <div class="cbi-section-actions">
+            <a class="cbi-button cbi-button-apply" href="<%=url('admin/services/drcom/log')%>">刷新</a>
+            <a class="cbi-button cbi-button-remove" href="<%=url('admin/services/drcom/clear_log')%>">清空日志</a>
+        </div>
+        <div class="cbi-value">
+            <textarea class="cbi-input-textarea" style="width: 100%; min-height: 400px; font-family: monospace;" readonly="readonly"><%=log_content:pcdata()%></textarea>
+        </div>
     </div>
-  </div>
 </div>
 <%+footer%>
