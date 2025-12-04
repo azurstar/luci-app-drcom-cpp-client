@@ -1,11 +1,5 @@
 # OpenWRT Drcom 客户端
 
-![d0f10eb81b6d6fe78ac6cffb63ca61c9](https://github.com/user-attachments/assets/22c9a127-f3a1-4147-95e8-ddfaddc09980)
-
-## 简介
-
-本项目是一个为 [drcom-cpp-client](https://github.com/azurstar/drcom-cpp-client) 设计的 LuCI Web 管理界面，适用于 OpenWrt 系统。它允许用户通过网页方便地配置、管理和监控 `drcom-cpp-client` 的运行。
-
 ## 主要功能
 
 - **图形化配置**: 提供完整的 Web 操作界面，用于配置 Dr.COM 客户端的各项参数。
