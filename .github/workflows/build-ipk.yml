@@ -8,12 +8,18 @@ on:
 
 jobs:
   build_packages:
-    name: Build ${{ matrix.target }}
+    name: Build ${{ matrix.name }}
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
         include:
+          - target: x86
+            name: x86_64
+            config_text: |
+              CONFIG_TARGET_x86=y
+              CONFIG_TARGET_x86_64=y
+              CONFIG_TARGET_x86_64_DEVICE_generic=y
           - target: rockchip
             name: rockchip_armv8
             config_text: |
@@ -66,7 +72,6 @@ jobs:
         run: cd ../openwrt && make download -j8
 
       - name: Build tools and toolchain
-        # 依次编译：工具 -> 工具链 -> 内核(用于模块依赖)
         run: |
           cd ../openwrt
           make tools/install -j$(nproc) || make tools/install -j1 V=s
@@ -106,7 +111,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          # 注意：download-artifact v4 会为每个 artifact 创建子文件夹
           files: |
             artifacts/ipk-rockchip_armv8/*.ipk
             artifacts/ipk-ramips_mt7621/*.ipk
+            artifacts/ipk-x86_64/*.ipk
