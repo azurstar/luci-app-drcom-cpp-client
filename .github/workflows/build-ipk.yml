@@ -18,9 +18,7 @@ jobs:
       - name: Clone OpenWrt
         run: git clone --depth 1 --branch openwrt-23.05 https://github.com/openwrt/openwrt.git openwrt
       - name: Add package to build tree
-        run: |
-          cp -r $GITHUB_WORKSPACE openwrt/package/luci-app-drcom-cpp-client
-          rm -rf openwrt/package/luci-app-drcom-cpp-client/.git
+        run: ln -s $GITHUB_WORKSPACE openwrt/package/luci-app-drcom-cpp-client
       - name: Update and install feeds
         run: cd openwrt && ./scripts/feeds update -a && ./scripts/feeds install -a
       - name: Create build configuration
@@ -58,9 +56,7 @@ jobs:
       - name: Clone OpenWrt
         run: git clone --depth 1 --branch openwrt-23.05 https://github.com/openwrt/openwrt.git openwrt
       - name: Add package to build tree
-        run: |
-          cp -r $GITHUB_WORKSPACE openwrt/package/luci-app-drcom-cpp-client
-          rm -rf openwrt/package/luci-app-drcom-cpp-client/.git
+        run: ln -s $GITHUB_WORKSPACE openwrt/package/luci-app-drcom-cpp-client
       - name: Update and install feeds
         run: cd openwrt && ./scripts/feeds update -a && ./scripts/feeds install -a
       - name: Create build configuration
