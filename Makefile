@@ -36,12 +36,15 @@ define Package/$(PKG_NAME)/install
 	$(CP) ./files/usr/lib/lua/luci/view/drcom/config.htm $(1)/usr/lib/lua/luci/view/drcom/
 	$(CP) ./files/usr/lib/lua/luci/view/drcom/advance.htm $(1)/usr/lib/lua/luci/view/drcom/
 	$(CP) ./files/usr/lib/lua/luci/view/drcom/log.htm $(1)/usr/lib/lua/luci/view/drcom/
+	$(CP) ./files/usr/lib/lua/luci/view/drcom/status.htm $(1)/usr/lib/lua/luci/view/drcom/
 
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/drcom_client $(1)/usr/bin/
 
 	$(INSTALL_DIR) $(1)/etc/drcom
 	$(CP) ./files/etc/drcom/config.yaml $(1)/etc/drcom/
+	$(CP) ./files/etc/drcom/keep_alive.sh $(1)/etc/drcom/
+	chmod 755 $(1)/etc/drcom/keep_alive.sh
 
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/etc/init.d/drcom_client $(1)/etc/init.d/
