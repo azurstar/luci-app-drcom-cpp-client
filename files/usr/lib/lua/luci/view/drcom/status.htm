@@ -1,7 +1,9 @@
 <%+header%>
+
 <div class="cbi-map">
     <h2 name="content">服务状态</h2>
     <div class="cbi-section">
+        
         <div class="cbi-value">
             <label class="cbi-value-title">运行状态</label>
             <div class="cbi-value-field">
@@ -10,6 +12,7 @@
                 </span>
             </div>
         </div>
+
         <div class="cbi-value">
             <label class="cbi-value-title">开机自启</label>
             <div class="cbi-value-field">
@@ -18,22 +21,26 @@
                 </span>
             </div>
         </div>
+
         <div class="cbi-value">
             <label class="cbi-value-title">服务操作</label>
             <div class="cbi-value-field">
                 <% if data.running then %>
-                    <a class="cbi-button cbi-button-apply" href="<%=url('admin/services/drcom/restart')%>">重启</a>
-                    <a class="cbi-button" style="background-color: #f5365c; color: white;" href="<%=url('admin/services/drcom/stop')%>">停止</a>
+                    <input class="cbi-button cbi-button-apply" type="button" value="重启" onclick="location.href='<%=url('admin/services/drcom/restart')%>'" />
+                    <input class="cbi-button cbi-button-remove" type="button" value="停止" onclick="location.href='<%=url('admin/services/drcom/stop')%>'" />
                 <% else %>
-                    <a class="cbi-button cbi-button-apply" href="<%=url('admin/services/drcom/start')%>">启动</a>
+                    <input class="cbi-button cbi-button-apply" type="button" value="启动" onclick="location.href='<%=url('admin/services/drcom/start')%>'" />
                 <% end %>
+
                 <% if data.enabled then %>
-                    <a class="cbi-button cbi-button-remove" style="color: white;" href="<%=url('admin/services/drcom/toggle_boot')%>">禁用自启</a>
+                    <input class="cbi-button cbi-button-remove" type="button" value="禁用自启" onclick="location.href='<%=url('admin/services/drcom/toggle_boot')%>'" />
                 <% else %>
-                    <a class="cbi-button cbi-button-apply" href="<%=url('admin/services/drcom/toggle_boot')%>">启用自启</a>
+                    <input class="cbi-button cbi-button-apply" type="button" value="启用自启" onclick="location.href='<%=url('admin/services/drcom/toggle_boot')%>'" />
                 <% end %>
             </div>
         </div>
+
     </div>
 </div>
+
 <%+footer%>

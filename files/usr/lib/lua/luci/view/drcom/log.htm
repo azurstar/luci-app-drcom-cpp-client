@@ -3,8 +3,9 @@
     <h2 name="content">运行日志</h2>
     <div class="cbi-section">
         <div class="cbi-section-actions">
-            <a class="cbi-button cbi-button-apply" href="<%=url('admin/services/drcom/log')%>">刷新</a>
-            <a class="cbi-button cbi-button-remove" style="color: white;" href="<%=url('admin/services/drcom/clear_log')%>">清空日志</a>
+            <input class="cbi-button cbi-button-apply" type="button" value="刷新" onclick="location.href='<%=url('admin/services/drcom/log')%>'" />
+            
+            <input class="cbi-button cbi-button-remove" type="button" value="清空日志" onclick="location.href='<%=url('admin/services/drcom/clear_log')%>'" />
         </div>
         <div class="cbi-value">
             <textarea class="cbi-input-textarea" style="width: 100%; min-height: 400px; font-family: monospace;" readonly="readonly"><%=log_content:pcdata()%></textarea>
