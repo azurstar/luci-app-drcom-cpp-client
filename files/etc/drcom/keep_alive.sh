@@ -1,64 +1,64 @@
 #!/bin/sh
 
-# 引入 OpenWrt 常用函数库
 . /lib/functions.sh
 
-CONFIG_FILE="/etc/drcom/config.yaml"
-# 使用特殊的 tag 记录日志，方便 grep
-LOG_TAG="drcom_keep_alive"
+LOG_FILE="/tmp/drcom_client.log"
 
 log() {
-    # 写入系统日志，使用 logread 查看
-    logger -t "$LOG_TAG" "$1"
+    local message
+    message="$(date '+%Y-%m-%d %H:%M:%S') [drcom_keep_alive] $1"
+    echo "$message" >> "$LOG_FILE"
 }
 
-# 健壮的 YAML 读取函数
-read_yaml_key() {
-    local key="$1"
-    if [ -f "$CONFIG_FILE" ]; then
-        grep "^[[:space:]]*${key}:" "$CONFIG_FILE" | sed -e "s/^.*${key}:[[:space:]]*//" -e 's/["\r'\'']//g'
+# Simple YAML parser
+get_config() {
+    local key=$1
+    local config_file="/etc/drcom/config.yaml"
+    if [ -f "$config_file" ]; then
+        # Ensure we read the file and handle potential empty results
+        grep "^${key}:" "$config_file" | sed -e "s/^${key}: *//g" -e 's/"//g' | tr -d '\r'
     fi
 }
 
-# 读取必要配置
-INTERVAL=$(read_yaml_key 'keep_alive_interval')
-URL=$(read_yaml_key 'keep_alive_url')
+log "Keep-alive script started."
 
-# 设置默认值
-INTERVAL=${INTERVAL:-300}
+# Read configuration
+ENABLED=$(get_config 'keep_alive_enabled')
+INTERVAL=$(get_config 'keep_alive_interval')
+URL=$(get_config 'keep_alive_url')
+
+log "Read config: keep_alive_enabled=${ENABLED}"
+
+# Exit if not enabled
+if [ "$ENABLED" != "true" ]; then
+    log "Exiting: Keep-alive is not enabled in config."
+    exit 0
+fi
+
+# Use default values if not set
+INTERVAL=${INTERVAL:-300} # 300 seconds (5 minutes)
 URL=${URL:-"http://www.baidu.com"}
 
-log "Started. Checking $URL every $INTERVAL seconds."
-
-# 启动初期等待 60 秒，给主程序和网络接口一点时间
-sleep 60
+log "Daemon configured. Checking connectivity every $INTERVAL seconds to $URL."
 
 while true; do
-    # 使用 wget 仅检测连接 (--spider)，不下载文件
-    # 超时时间设为 10 秒
+    sleep "$INTERVAL"
+
+    log "Performing connectivity check..."
+    # Check connectivity
     if ! wget -q --spider --timeout=10 "$URL"; then
-        log "Network unreachable. URL: $URL"
-        
-        # 检查主程序是否还在运行
-        if pgrep -x "drcom_client" > /dev/null; then
-            log "Process exists but network is down. Killing process to trigger procd respawn..."
-            
-            # --- 核心修改 ---
-            # 直接杀掉主进程。
-            # 因为 init.d 里配置了 'procd_set_param respawn'，
-            # procd 监控到进程消失后，会自动、干净地重新启动它。
-            # 这样保活脚本自己可以继续运行，不会被中断。
-            killall -9 drcom_client
-            
-            # 等待一会，给程序重启的时间，避免连续杀进程
-            sleep 20
+        log "Connectivity check failed. URL: $URL"
+        # Check if service is actually running using procd
+        local is_running
+        service_running drcom_client && is_running=1 || is_running=0
+
+        if [ "$is_running" -eq 1 ]; then
+            log "Service is running, attempting to restart drcom_client service..."
+            /etc/init.d/drcom_client restart &
         else
-            log "Process not running. Waiting for system to restart it..."
+            log "Service is not running. Won't restart."
         fi
     else
-        # 网络正常，静默通过
-        :
+        log "Connectivity check OK."
     fi
-
-    sleep "$INTERVAL"
 done
