@@ -34,7 +34,7 @@ local function build_simple_yaml(tbl)
         "PRIMARY_DNS", "dhcp_server", "mac", "CONTROLCHECKSTATUS", "ADAPTERNUM",
         "KEEP_ALIVE_VERSION", "AUTH_VERSION", "IPDOG", "ror_version", "nic_name",
         "IS_TEST", "DEBUG", "LOG_PATH", "keep_alive_enabled", "keep_alive_interval",
-        "keep_alive_url"
+        "keep_alive_test_ip"
     }
     for _, k in ipairs(ordered_keys) do
         local v = tbl[k]
@@ -143,7 +143,7 @@ function action_save()
         nic_name = http.formvalue("nic_name"),
         LOG_PATH = http.formvalue("LOG_PATH"),
         keep_alive_interval = http.formvalue("keep_alive_interval"),
-        keep_alive_url = http.formvalue("keep_alive_url"),
+        keep_alive_test_ip = http.formvalue("keep_alive_test_ip"),
         ror_version = http.formvalue("ror_version") == "1",
         IS_TEST = http.formvalue("IS_TEST") == "1",
         DEBUG = http.formvalue("DEBUG") == "1",
