@@ -20,3 +20,4 @@ IPDOG: "01"
 keep_alive_enabled: false
 keep_alive_interval: 300
 keep_alive_test_ip: "223.5.5.5"
+keep_alive_max_fail: 3

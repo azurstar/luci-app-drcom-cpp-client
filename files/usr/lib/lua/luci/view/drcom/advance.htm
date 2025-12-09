@@ -83,6 +83,13 @@
                         <input class="cbi-input-text" type="text" id="keep_alive_test_ip" name="keep_alive_test_ip" value="<%=data.keep_alive_test_ip or '223.5.5.5'%>" />
                     </div>
                 </div>
+                <div class="cbi-value">
+                    <label class="cbi-value-title" for="keep_alive_max_fail">最大尝试次数</label>
+                    <div class="cbi-value-field">
+                        <input class="cbi-input-text" type="text" id="keep_alive_max_fail" name="keep_alive_max_fail" value="<%=data.keep_alive_max_fail or '3'%>" />
+                        <div class="cbi-value-description"> </div>
+                    </div>
+                </div>
             </div>
         </fieldset>
 

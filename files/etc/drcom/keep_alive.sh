@@ -39,7 +39,7 @@ log "Daemon configured. Checking connectivity every $INTERVAL seconds to $TEST_I
 
 # 增加一个失败计数器，防止偶尔的丢包导致重启
 FAIL_COUNT=0
-MAX_FAIL=5
+MAX_FAIL=5$(get_config 'keep_alive_max_fail')
 
 while true; do
     sleep "$INTERVAL"
